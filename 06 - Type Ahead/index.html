@@ -31,6 +31,10 @@ function findMatches(wordToMatch) {
   });
 }
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 // display suggestions
 function displaySuggestions() {
   const matches = findMatches(this.value);
@@ -49,7 +53,7 @@ function displaySuggestions() {
     const states = place.state.replace(regexp,`<span class="hl">${this.value}</span>`);
     return `<li>
     <span class="name">${cities}, ${states}</span>
-    <span class="population">${place.population}</span>
+    <span class="population">${numberWithCommas(place.population)}</span>
     </li>`
   }).join('');
   suggestions.innerHTML = html;
