@@ -17,6 +17,29 @@
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+// fetch the pre-set json data
+const cities = [];
+fetch(endpoint)
+  .then(blob => blob.json())
+  .then(value => cities.push(...value));
+
+// find matches
+function findMatches() {
+  const matches = cities.filter(place => {
+    // const searchInput = document.querySelector('.search');
+    console.log(this.value);
+    const regexp = new RegExp(this.value, 'ig');
+    return place.city.match(regexp);
+  });
+  console.log(matches);
+  // return matches;
+}
+
+const userInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+// userInput.addEventListener('change', findMatches);
+userInput.addEventListener('keyup', findMatches);
+
 </script>
   </body>
 </html>
