@@ -24,22 +24,43 @@ fetch(endpoint)
   .then(value => cities.push(...value));
 
 // find matches
-function findMatches() {
-  const matches = cities.filter(place => {
-    // const searchInput = document.querySelector('.search');
-    console.log(this.value);
-    const regexp = new RegExp(this.value, 'ig');
-    return place.city.match(regexp);
+function findMatches(wordToMatch) {
+  return cities.filter(place => {
+    const regexp = new RegExp(wordToMatch, 'ig');
+    return place.city.match(regexp) || place.state.match(regexp);
   });
-  console.log(matches);
-  // return matches;
+}
+
+// display suggestions
+function displaySuggestions() {
+  const matches = findMatches(this.value);
+  const regexp = new RegExp(this.value, 'ig');
+  // use foreach
+  // matches.foreach(place => {
+  //   suggestions.innerHTML += `<li>
+  //   <span name="city">${place.city}, ${place.state}</span>
+  //   <span name="population">${place.population}</span>
+  //   </li>`
+  // });
+
+  // use map
+  const html = matches.map(place => {
+    const cities = place.city.replace(regexp,`<span class="hl">${this.value}</span>`);
+    const states = place.state.replace(regexp,`<span class="hl">${this.value}</span>`);
+    return `<li>
+    <span class="name">${cities}, ${states}</span>
+    <span class="population">${place.population}</span>
+    </li>`
+  }).join('');
+  suggestions.innerHTML = html;
 }
 
 const userInput = document.querySelector('.search');
 const suggestions = document.querySelector('.suggestions');
-// userInput.addEventListener('change', findMatches);
-userInput.addEventListener('keyup', findMatches);
+userInput.addEventListener('keyup', displaySuggestions);
 
 </script>
   </body>
 </html>
+
+
